@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Generar QR para AR</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+      body {
+        font-family: sans-serif;
+        text-align: center;
+        padding: 40px;
+        background: #f5f5f5;
+      }
+      #qrcode {
+        display: inline-block;
+        padding: 24px;
+        background: white;
+        border-radius: 12px;
+        margin-top: 24px;
+      }
+      .nota {
+        margin-top: 20px;
+        font-size: 13px;
+        color: #666;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      button {
+        margin-top: 20px;
+        padding: 12px 28px;
+        background: #1a1a1a;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>QR para tu tarjeta AR</h2>
+    <p>Este QR activa la realidad aumentada <strong>y</strong> lleva a tu sitio.</p>
+
+    <!--
+      AR.js detecta este QR como marcador tipo barcode value="1"
+      El contenido del QR es la URL de tu app AR
+    -->
+    <div id="qrcode"></div>
+
+    <br />
+    <button onclick="descargarQR()">⬇️ Descargar QR</button>
+
+    <p class="nota">
+      Imprime este QR en tu tarjeta de presentación. Al escanearlo, abre la experiencia AR
+      y también sirve como marcador para que la imagen flote sobre él.
+    </p>
+
+    <script>
+      // Genera el QR — el texto puede ser tu URL o simplemente "1"
+      // AR.js detecta el patrón visual del QR, no su contenido de texto
+      const qr = new QRCode(document.getElementById('qrcode'), {
+        // ✏️ Cambia por la URL donde subiste tu index.html
+        text: 'https://tu-usuario.github.io/mi-proyecto-ar/',
+        width: 256,
+        height: 256,
+        colorDark: '#000000',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.H  // nivel alto = más robusto para AR
+      });
+
+      function descargarQR() {
+        const canvas = document.querySelector('#qrcode canvas');
+        const link = document.createElement('a');
+        link.download = 'qr-tarjeta-ar.png';
+        link.href = canvas.toDataURL();
+        link.click();
+      }
+    </script>
+  </body>
+</html>
