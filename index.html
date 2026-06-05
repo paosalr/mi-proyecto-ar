@@ -1,196 +1,70 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AR Tarjeta</title>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+<title>IMAS AR</title>
 
-    <style>
-      body { margin: 0; overflow: hidden; }
+<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/aframe-extras@7.5.4/dist/aframe-extras.min.js"></script>
 
-      #instruccion {
-        position: fixed;
-        top: 24px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(0,0,0,0.6);
-        color: white;
-        padding: 10px 20px;
-        border-radius: 50px;
-        font-size: 14px;
-        font-family: sans-serif;
-        z-index: 9999;
-        white-space: nowrap;
-        pointer-events: none;
-        transition: opacity 0.5s;
-      }
-    </style>
-  </head>
+<script src="https://cdn.jsdelivr.net/npm/@ar-js-org/ar.js@3.4.5/aframe/build/aframe-ar.js"></script>
 
-  <body>
+<style>
 
-    <div id="instruccion">📷 Apunta la cámara al marcador de la tarjeta</div>
+body{
+margin:0;
+overflow:hidden;
+font-family:Arial;
+}
 
-    <a-scene
-      embedded
-      arjs="sourceType: webcam;
-            detectionMode: mono_and_matrix;
-            matrixCodeType: 3x3;
-            debugUIEnabled: false;
-            trackingMethod: best;"
-      renderer="logarithmicDepthBuffer: true; antialias: true;"
-      vr-mode-ui="enabled: false"
-    >
-      <a-assets>
-        <img id="mi-imagen" src="assets/fondo.png" crossorigin="anonymous" />
+#overlay{
+position:fixed;
+inset:0;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#000;
+z-index:9999;
+}
 
-        <!-- Canvas para botón Web -->
-        <canvas id="canvas-web" width="512" height="128"></canvas>
+#startBtn{
+padding:16px 30px;
+font-size:18px;
+border:none;
+border-radius:12px;
+cursor:pointer;
+}
 
-        <!-- Canvas para botón WhatsApp -->
-        <canvas id="canvas-wpp" width="512" height="128"></canvas>
-      </a-assets>
+</style>
+</head>
 
-      <a-marker type="barcode" value="1">
+<body>
 
-        <!-- Imagen principal flotando -->
-        <a-image
-          src="#mi-imagen"
-          position="0 1.2 0"
-          width="3.5"
-          height="2"
-          animation__entrada="property: position;
-                     from: 0 0.8 0;
-                     to: 0 1.2 0;
-                     dur: 900;
-                     easing: easeOutElastic"
-          animation__flotar="property: position;
-                     from: 0 1.2 0;
-                     to: 0 1.35 0;
-                     dur: 2000;
-                     dir: alternate;
-                     loop: true;
-                     easing: easeInOutSine"
-        ></a-image>
+<div id="overlay">
+<button id="startBtn">
+Iniciar Experiencia AR
+</button>
+</div>
 
-        <!-- Botón Web — flota a la izquierda abajo -->
-        <a-plane
-          id="btn-web"
-          width="1.6"
-          height="0.45"
-          position="-0.9 0.25 0"
-          rotation="-90 0 0"
-          material="shader: flat; src: #canvas-web; transparent: true;"
-          animation__entrada="property: position;
-                     from: -0.9 0 0;
-                     to: -0.9 0.25 0;
-                     dur: 700;
-                     delay: 400;
-                     easing: easeOutBack"
-          animation__flotar="property: position;
-                     from: -0.9 0.25 0;
-                     to: -0.9 0.35 0;
-                     dur: 2200;
-                     dir: alternate;
-                     loop: true;
-                     easing: easeInOutSine"
-          class="clickable"
-        ></a-plane>
+<a-scene
+embedded
+arjs="sourceType: webcam;">
 
-        <!-- Botón WhatsApp — flota a la derecha abajo -->
-        <a-plane
-          id="btn-wpp"
-          width="1.6"
-          height="0.45"
-          position="0.9 0.25 0"
-          rotation="-90 0 0"
-          material="shader: flat; src: #canvas-wpp; transparent: true;"
-          animation__entrada="property: position;
-                     from: 0.9 0 0;
-                     to: 0.9 0.25 0;
-                     dur: 700;
-                     delay: 600;
-                     easing: easeOutBack"
-          animation__flotar="property: position;
-                     from: 0.9 0.25 0;
-                     to: 0.9 0.35 0;
-                     dur: 1800;
-                     dir: alternate;
-                     loop: true;
-                     easing: easeInOutSine"
-          class="clickable"
-        ></a-plane>
+<a-assets>
 
-      </a-marker>
+<img
+id="brand"
+src="assets/fondo.png">
 
-      <!-- Cursor para detectar clicks en objetos 3D -->
-      <a-entity camera>
-        <a-entity
-          cursor="fuse: false; rayOrigin: mouse;"
-          raycaster="objects: .clickable; recursive: false;"
-        ></a-entity>
-      </a-entity>
+</a-assets>
 
-    </a-scene>
+<a-camera gps-camera rotation-reader></a-camera>
 
-    <script>
-      // Dibuja botón Web en canvas
-      function dibujarBoton(canvasId, emoji, texto, bgColor) {
-        const canvas = document.getElementById(canvasId);
-        const ctx = canvas.getContext('2d');
-        const w = canvas.width;
-        const h = canvas.height;
+</a-scene>
 
-        ctx.clearRect(0, 0, w, h);
+<script src="js/app.js"></script>
 
-        // Fondo con bordes redondeados
-        const radio = 40;
-        ctx.beginPath();
-        ctx.moveTo(radio, 0);
-        ctx.lineTo(w - radio, 0);
-        ctx.quadraticCurveTo(w, 0, w, radio);
-        ctx.lineTo(w, h - radio);
-        ctx.quadraticCurveTo(w, h, w - radio, h);
-        ctx.lineTo(radio, h);
-        ctx.quadraticCurveTo(0, h, 0, h - radio);
-        ctx.lineTo(0, radio);
-        ctx.quadraticCurveTo(0, 0, radio, 0);
-        ctx.closePath();
-        ctx.fillStyle = bgColor;
-        ctx.fill();
-
-        // Texto
-        ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 52px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(emoji + '  ' + texto, w / 2, h / 2);
-      }
-
-      dibujarBoton('canvas-web', '🌐', 'Visitar sitio', '#1a1a1a');
-      dibujarBoton('canvas-wpp', '💬', 'WhatsApp', '#25D366');
-
-      // Clicks en botones 3D
-      document.getElementById('btn-web').addEventListener('click', function () {
-        window.open('https://www.imas.agency', '_blank');
-      });
-
-      document.getElementById('btn-wpp').addEventListener('click', function () {
-        window.open('https://wa.me/5214461846064?text=Hola%2C%20vi%20tu%20tarjeta%20%F0%9F%94%A5', '_blank');
-      });
-
-      // Instrucción aparece/desaparece con el marcador
-      document.querySelector('a-scene').addEventListener('markerFound', function () {
-        document.getElementById('instruccion').style.opacity = '0';
-      });
-
-      document.querySelector('a-scene').addEventListener('markerLost', function () {
-        document.getElementById('instruccion').style.opacity = '1';
-      });
-    </script>
-
-  </body>
+</body>
 </html>
