@@ -18,27 +18,21 @@ const container = document.createElement("a-entity");
 
 container.setAttribute(
 "position",
-"0 0 -3"
-);
-
-container.setAttribute(
-"animation",
-`
-property: rotation;
-to: 0 360 0;
-loop: true;
-dur: 30000;
-easing: linear;
-`
+"0 0 -1"
 );
 
 scene.appendChild(container);
 
-const image = document.createElement("a-plane");
+const image = document.createElement("a-image");
 
 image.setAttribute(
 "src",
 "#brand"
+);
+
+image.setAttribute(
+"transparent",
+"true"
 );
 
 image.setAttribute(
@@ -53,7 +47,7 @@ image.setAttribute(
 
 image.setAttribute(
 "position",
-"0 1.2 0"
+"0 0.3 0"
 );
 
 container.appendChild(image);
@@ -82,7 +76,7 @@ webBtn.setAttribute(
 
 webBtn.setAttribute(
 "position",
-"-0.7 -0.2 0"
+"-0.5 -0.5 0"
 );
 
 container.appendChild(webBtn);
@@ -140,7 +134,7 @@ waBtn.setAttribute(
 
 waBtn.setAttribute(
 "position",
-"0.7 -0.2 0"
+"0.5 -0.5 0"
 );
 
 container.appendChild(waBtn);
