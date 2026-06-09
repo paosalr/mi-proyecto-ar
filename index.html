@@ -2,103 +2,98 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>IMAS AR</title>
 
 <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
 <style>
+
 body{
-    margin:0;
-    overflow:hidden;
-    font-family:Arial,sans-serif;
+margin:0;
+overflow:hidden;
+font-family:Arial;
 }
 
-#overlay{
-    position:fixed;
-    inset:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:#000;
-    z-index:9999;
-}
-
-#startBtn{
-    padding:16px 30px;
-    font-size:18px;
-    border:none;
-    border-radius:12px;
-    cursor:pointer;
-}
-
-#actions{
-    position:fixed;
-    bottom:30px;
-    left:50%;
-    transform:translateX(-50%);
-    display:none;
-    gap:15px;
-    z-index:9999;
-}
-
-.action-btn{
-    padding:12px 20px;
-    border-radius:10px;
-    text-decoration:none;
-    font-weight:bold;
-    color:white;
-}
-
-.website{
-    background:#111111;
-}
-
-.whatsapp{
-    background:#25D366;
-}
 </style>
 
 </head>
 
 <body>
 
-<div id="overlay">
-    <button id="startBtn">
-        Iniciar Experiencia
-    </button>
-</div>
+<a-scene
+mindar-image="imageTargetSrc: ./targets/targets.mind;"
+color-space="sRGB"
+renderer="colorManagement: true;"
+vr-mode-ui="enabled: false"
+device-orientation-permission-ui="enabled: true">
 
-<div id="actions">
-    <a
-        class="action-btn website"
-        href="https://www.imas.agency"
-        target="_blank">
-        Website
-    </a>
+<a-assets>
 
-    <a
-        class="action-btn whatsapp"
-        href="https://wa.me/524461846064"
-        target="_blank">
-        WhatsApp
-    </a>
-</div>
+<img
+id="brand"
+src="./assets/fondo.png">
 
-<a-scene>
+</a-assets>
 
-    <a-assets>
-        <img
-            id="brand"
-            src="assets/fondo.png">
-    </a-assets>
+<a-camera
+position="0 0 0"
+look-controls="false">
+</a-camera>
 
-    <a-camera position="0 0 0"></a-camera>
+<a-entity mindar-image-target="targetIndex: 0">
+
+<a-image
+src="#brand"
+position="0 0.4 0"
+width="1.7"
+height="0.9">
+</a-image>
+
+<a-plane
+id="websiteBtn"
+position="-0.45 -0.45 0"
+width="0.7"
+height="0.22"
+color="#111111">
+
+<a-text
+value="Website"
+align="center"
+color="#FFF"
+position="0 0 0.01"
+width="2">
+</a-text>
+
+</a-plane>
+
+<a-plane
+id="whatsappBtn"
+position="0.45 -0.45 0"
+width="0.7"
+height="0.22"
+color="#25D366">
+
+<a-text
+value="WhatsApp"
+align="center"
+color="#FFF"
+position="0 0 0.01"
+width="2">
+</a-text>
+
+</a-plane>
+
+</a-entity>
 
 </a-scene>
 
-<script src="js/app.js"></script>
+<script src="./js/app.js"></script>
 
 </body>
 </html>

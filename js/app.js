@@ -1,29 +1,27 @@
-const scene = document.querySelector("a-scene");
+window.addEventListener("DOMContentLoaded", () => {
 
-document
-.getElementById("startBtn")
-.addEventListener("click", () => {
-
-    document.getElementById("overlay").remove();
-
-    document.getElementById("actions").style.display = "flex";
-
-    crearExperiencia();
-
-});
-
-function crearExperiencia() {
-
-    const image = document.createElement("a-image");
-
-    image.setAttribute("src", "#brand");
-
-    image.setAttribute("width", "2.5");
-
-    image.setAttribute("height", "1.5");
-
-    image.setAttribute("position", "0 0 -3");
-
-    scene.appendChild(image);
-
-}
+    const websiteBtn =
+    document.querySelector("#websiteBtn");
+    
+    const whatsappBtn =
+    document.querySelector("#whatsappBtn");
+    
+    websiteBtn.addEventListener("click", () => {
+    
+    window.open(
+    "https://www.imas.agency",
+    "_blank"
+    );
+    
+    });
+    
+    whatsappBtn.addEventListener("click", () => {
+    
+    window.open(
+    "https://wa.me/524461846064",
+    "_blank"
+    );
+    
+    });
+    
+    });
