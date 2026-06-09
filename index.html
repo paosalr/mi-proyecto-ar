@@ -3,241 +3,214 @@
 <head>
 
 <meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IMAS AR</title>
 
 <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-
-<link
-rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <style>
 
-html,
-body{
-margin:0;
-width:100%;
-height:100%;
-overflow:hidden;
-font-family:Arial,sans-serif;
-background:#000;
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  background: #000;
 }
 
 /* INTRO */
-
-#intro{
-position:fixed;
-inset:0;
-z-index:9999;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-background:#050816;
-color:#fff;
-overflow:hidden;
+#intro {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #050816;
+  color: #fff;
+  overflow: hidden;
 }
 
-.wave{
-position:absolute;
-width:160%;
-height:160%;
-border-radius:40%;
-background:rgba(59,130,246,.12);
-animation:spin 12s linear infinite;
+.wave {
+  position: absolute;
+  width: 160%;
+  height: 160%;
+  border-radius: 40%;
+  background: rgba(59,130,246,.12);
+  animation: spin 12s linear infinite;
 }
 
-.wave:nth-child(2){
-animation-duration:18s;
-background:rgba(59,130,246,.08);
+.wave:nth-child(2) {
+  animation-duration: 18s;
+  background: rgba(59,130,246,.08);
 }
 
-@keyframes spin{
-from{
-transform:rotate(0deg);
-}
-to{
-transform:rotate(360deg);
-}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
 
-.logo{
-z-index:2;
-font-size:42px;
-font-weight:bold;
-letter-spacing:4px;
+.logo {
+  z-index: 2;
+  font-size: 42px;
+  font-weight: bold;
+  letter-spacing: 4px;
 }
 
-.tagline{
-z-index:2;
-margin-top:10px;
-font-size:18px;
+.tagline {
+  z-index: 2;
+  margin-top: 10px;
+  font-size: 18px;
 }
 
-#startBtn{
-z-index:2;
-margin-top:40px;
-padding:15px 30px;
-border:none;
-border-radius:12px;
-background:#2563eb;
-color:white;
-font-size:16px;
-cursor:pointer;
+#startBtn {
+  z-index: 2;
+  margin-top: 40px;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 12px;
+  background: #2563eb;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 /* BOTONES */
-
-#actions{
-position:fixed;
-bottom:30px;
-left:50%;
-transform:translateX(-50%);
-display:none;
-gap:20px;
-z-index:999;
+#actions {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+  gap: 20px;
+  z-index: 999;
 }
 
-.action-btn{
-width:70px;
-height:70px;
-border-radius:50%;
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:30px;
-color:white;
-text-decoration:none;
-backdrop-filter:blur(10px);
-box-shadow:0 0 25px rgba(0,0,0,.25);
-transition:.3s;
+.action-btn {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  color: white;
+  text-decoration: none;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 25px rgba(0,0,0,.25);
+  transition: .3s;
 }
 
-.action-btn:hover{
-transform:scale(1.08);
-}
+.action-btn:hover { transform: scale(1.08); }
 
-.web{
-background:#111;
-}
-
-.whatsapp{
-background:#25D366;
-}
+.web      { background: #111; }
+.whatsapp { background: #25D366; }
 
 </style>
-
 </head>
 
 <body>
 
 <!-- INTRO -->
-
 <div id="intro">
-
-<div class="wave"></div>
-<div class="wave"></div>
-
-<div class="logo">
-IMAS
-</div>
-
-<div class="tagline">
-Build. Brand. Deploy.
-</div>
-
-<button id="startBtn">
-Iniciar Experiencia AR
-</button>
-
+  <div class="wave"></div>
+  <div class="wave"></div>
+  <div class="logo">IMAS</div>
+  <div class="tagline">Build. Brand. Deploy.</div>
+  <button id="startBtn">Iniciar Experiencia AR</button>
 </div>
 
 <!-- BOTONES -->
-
 <div id="actions">
-
-<a
-class="action-btn web"
-href="https://www.imas.agency"
-target="_blank">
-
-<i class="fas fa-globe"></i>
-
-</a>
-
-<a
-class="action-btn whatsapp"
-href="https://wa.me/524461846064"
-target="_blank">
-
-<i class="fab fa-whatsapp"></i>
-
-</a>
-
+  <a class="action-btn web"      href="https://www.imas.agency"       target="_blank"><i class="fas fa-globe"></i></a>
+  <a class="action-btn whatsapp" href="https://wa.me/524461846064"    target="_blank"><i class="fab fa-whatsapp"></i></a>
 </div>
 
 <!-- MINDAR -->
+<div id="ar-container" style="display:none; width:100%; height:100%;">
 
-<div
-id="ar-container"
-style="display:none; width:100%; height:100%;">
+  <a-scene
+    mindar-image="imageTargetSrc: ./targets/targets.mind;"
+    color-space="sRGB"
+    renderer="colorManagement: true;"
+    vr-mode-ui="enabled:false"
+    device-orientation-permission-ui="enabled:true">
 
-<a-scene
+    <a-assets>
+      <img id="brand" src="./assets/fondo.png">
+    </a-assets>
 
-mindar-image="imageTargetSrc: ./targets/targets.mind;"
+    <a-camera position="0 0 0" look-controls="false"></a-camera>
 
-color-space="sRGB"
+    <a-entity id="target" mindar-image-target="targetIndex:0">
 
-renderer="colorManagement: true;"
+      <!--
+        Echo layers: misma imagen, desplazadas en X y Z,
+        con opacidad y escala iniciales en 0.
+        El orden importa: img4 primero (atrás), img0 al frente.
+      -->
 
-vr-mode-ui="enabled:false"
+      <!-- Capa 4 — más lejana, casi invisible -->
+      <a-image
+        id="img4"
+        src="#brand"
+        position="-0.48 0 -0.04"
+        width="1.8"
+        height="0.9"
+        material="opacity: 0; transparent: true"
+        scale="0 0 0">
+      </a-image>
 
-device-orientation-permission-ui="enabled:true">
+      <!-- Capa 3 -->
+      <a-image
+        id="img3"
+        src="#brand"
+        position="-0.36 0 -0.03"
+        width="1.8"
+        height="0.9"
+        material="opacity: 0; transparent: true"
+        scale="0 0 0">
+      </a-image>
 
-<a-assets>
+      <!-- Capa 2 -->
+      <a-image
+        id="img2"
+        src="#brand"
+        position="-0.24 0 -0.02"
+        width="1.8"
+        height="0.9"
+        material="opacity: 0; transparent: true"
+        scale="0 0 0">
+      </a-image>
 
-<img
-id="brand"
-src="./assets/fondo.png">
+      <!-- Capa 1 -->
+      <a-image
+        id="img1"
+        src="#brand"
+        position="-0.12 0 -0.01"
+        width="1.8"
+        height="0.9"
+        material="opacity: 0; transparent: true"
+        scale="0 0 0">
+      </a-image>
 
-</a-assets>
+      <!-- Capa 0 — imagen principal, al frente -->
+      <a-image
+        id="img0"
+        src="#brand"
+        position="0 0 0"
+        width="1.8"
+        height="0.9"
+        material="opacity: 0; transparent: true"
+        scale="0 0 0">
+      </a-image>
 
-<a-camera
-position="0 0 0"
-look-controls="false">
-</a-camera>
-
-<a-entity
-id="target"
-mindar-image-target="targetIndex:0">
-
-<a-image
-
-id="brandImage"
-
-src="#brand"
-
-position="0 0 0"
-
-width="1.8"
-
-height="0.9"
-
-scale="0 0 0">
-
-</a-image>
-
-</a-entity>
-
-</a-scene>
-
+    </a-entity>
+  </a-scene>
 </div>
 
 <script src="./js/app.js"></script>
