@@ -8,55 +8,60 @@ startBtn.addEventListener("click", () => {
 });
 
 window.addEventListener("DOMContentLoaded", () => {
-  const target = document.querySelector("#target");
+  const sceneEl = document.querySelector("a-scene");
 
-  // Cada capa: id, opacidad final, delay en ms
-  const echoLayers = [
-    { id: "img4", opacity: 0.10, delay:  0  },
-    { id: "img3", opacity: 0.22, delay: 100 },
-    { id: "img2", opacity: 0.40, delay: 200 },
-    { id: "img1", opacity: 0.65, delay: 300 },
-    { id: "img0", opacity: 1.00, delay: 400 },
-  ];
+  // Esperar a que A-Frame esté listo antes de escuchar eventos
+  sceneEl.addEventListener("loaded", () => {
 
-  target.addEventListener("targetFound", () => {
-    actions.style.display = "flex";
+    const target = document.querySelector("#target");
 
-    echoLayers.forEach(({ id, opacity, delay }) => {
-      const el = document.querySelector(`#${id}`);
-      if (!el) return;
+    // Capas: de fondo a frente
+    // orden de aparición: primero las del fondo, última la principal
+    const echoLayers = [
+      { id: "img4", opacity: 0.10, delay:   0 },
+      { id: "img3", opacity: 0.22, delay: 100 },
+      { id: "img2", opacity: 0.40, delay: 200 },
+      { id: "img1", opacity: 0.65, delay: 300 },
+      { id: "img0", opacity: 1.00, delay: 400 },
+    ];
 
-      setTimeout(() => {
-        // Escala: aparece con rebote
-        el.setAttribute("animation__scale", [
-          "property: scale",
-          "to: 1 1 1",
-          "dur: 600",
-          "easing: easeOutBack"
-        ].join("; "));
+    target.addEventListener("targetFound", () => {
+      actions.style.display = "flex";
 
-        // Opacidad: fade in
-        el.setAttribute("animation__opacity", [
-          "property: material.opacity",
-          `to: ${opacity}`,
-          "dur: 500",
-          "easing: easeOutQuad"
-        ].join("; "));
-      }, delay);
+      echoLayers.forEach(({ id, opacity, delay }) => {
+        const el = document.querySelector(`#${id}`);
+        if (!el) return;
+
+        setTimeout(() => {
+          el.setAttribute("animation__scale", [
+            "property: scale",
+            "to: 1 1 1",
+            "dur: 600",
+            "easing: easeOutBack"
+          ].join("; "));
+
+          el.setAttribute("animation__opacity", [
+            "property: material.opacity",
+            `to: ${opacity}`,
+            "dur: 500",
+            "easing: easeOutQuad"
+          ].join("; "));
+        }, delay);
+      });
     });
-  });
 
-  target.addEventListener("targetLost", () => {
-    actions.style.display = "none";
+    target.addEventListener("targetLost", () => {
+      actions.style.display = "none";
 
-    echoLayers.forEach(({ id }) => {
-      const el = document.querySelector(`#${id}`);
-      if (!el) return;
-
-      el.removeAttribute("animation__scale");
-      el.removeAttribute("animation__opacity");
-      el.setAttribute("scale",    "0 0 0");
-      el.setAttribute("material", "opacity: 0; transparent: true; alphaTest: 0.01;");
+      echoLayers.forEach(({ id }) => {
+        const el = document.querySelector(`#${id}`);
+        if (!el) return;
+        el.removeAttribute("animation__scale");
+        el.removeAttribute("animation__opacity");
+        el.setAttribute("scale",    "0 0 0");
+        el.setAttribute("material", "opacity: 0; transparent: true; alphaTest: 0.01;");
+      });
     });
-  });
+
+  }); // fin sceneEl loaded
 });
