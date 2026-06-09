@@ -27,27 +27,10 @@ document.querySelector("#brandImage");
 
 target.addEventListener("targetFound", () => {
 
-image.removeAttribute("animation");
-
-image.setAttribute(
-"scale",
-"0.2 0.2 0.2"
-);
-
-setTimeout(() => {
-
 image.setAttribute(
 "animation",
-`
-property: scale;
-from: 0.2 0.2 0.2;
-to: 1 1 1;
-dur: 800;
-easing: easeOutElastic;
-`
+"property: scale; to: 1 1 1; dur: 700; easing: easeOutBack"
 );
-
-}, 50);
 
 actions.style.display = "flex";
 
