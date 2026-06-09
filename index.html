@@ -12,8 +12,11 @@
 
 <style>
 
+*, *::before, *::after { box-sizing: border-box; }
+
 html, body {
   margin: 0;
+  padding: 0;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -79,6 +82,21 @@ html, body {
   cursor: pointer;
 }
 
+/* AR CONTAINER — cubre toda la pantalla */
+#ar-container {
+  display: none;
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* A-Frame ocupa todo */
+#ar-container a-scene {
+  width: 100%;
+  height: 100%;
+}
+
 /* BOTONES */
 #actions {
   position: fixed;
@@ -126,86 +144,72 @@ html, body {
 
 <!-- BOTONES -->
 <div id="actions">
-  <a class="action-btn web"      href="https://www.imas.agency"       target="_blank"><i class="fas fa-globe"></i></a>
-  <a class="action-btn whatsapp" href="https://wa.me/524461846064"    target="_blank"><i class="fab fa-whatsapp"></i></a>
+  <a class="action-btn web"      href="https://www.imas.agency"    target="_blank"><i class="fas fa-globe"></i></a>
+  <a class="action-btn whatsapp" href="https://wa.me/524461846064" target="_blank"><i class="fab fa-whatsapp"></i></a>
 </div>
 
-<!-- MINDAR -->
-<div id="ar-container" style="display:none; width:100%; height:100%;">
+<!-- AR -->
+<div id="ar-container">
 
   <a-scene
-    mindar-image="imageTargetSrc: ./targets/targets.mind;"
+    mindar-image="imageTargetSrc: ./targets/targets.mind; uiScanning: no;"
     color-space="sRGB"
-    renderer="colorManagement: true;"
-    vr-mode-ui="enabled:false"
-    device-orientation-permission-ui="enabled:true">
+    renderer="colorManagement: true; alpha: true;"
+    vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: true"
+    embedded>
 
     <a-assets>
-      <img id="brand" src="./assets/fondo.png">
+      <img id="brand" src="./assets/fondo.png" crossorigin="anonymous">
     </a-assets>
 
     <a-camera position="0 0 0" look-controls="false"></a-camera>
 
-    <a-entity id="target" mindar-image-target="targetIndex:0">
+    <a-entity id="target" mindar-image-target="targetIndex: 0">
 
       <!--
-        Echo layers: misma imagen, desplazadas en X y Z,
-        con opacidad y escala iniciales en 0.
-        El orden importa: img4 primero (atrás), img0 al frente.
+        Echo layers — de atrás hacia adelante.
+        Offset en X aumenta hacia la derecha conforme se acerca al frente.
+        Todas empiezan con scale 0 0 0 y opacity 0; el JS las anima.
       -->
 
-      <!-- Capa 4 — más lejana, casi invisible -->
-      <a-image
-        id="img4"
-        src="#brand"
-        position="-0.48 0 -0.04"
-        width="1.8"
-        height="0.9"
-        material="opacity: 0; transparent: true"
+      <!-- Capa 4 — más atrás, casi invisible -->
+      <a-image id="img4" src="#brand"
+        position="-1.0 0 0"
+        width="1.8" height="0.9"
+        material="opacity: 0; transparent: true; alphaTest: 0.01;"
         scale="0 0 0">
       </a-image>
 
       <!-- Capa 3 -->
-      <a-image
-        id="img3"
-        src="#brand"
-        position="-0.36 0 -0.03"
-        width="1.8"
-        height="0.9"
-        material="opacity: 0; transparent: true"
+      <a-image id="img3" src="#brand"
+        position="-0.75 0 0"
+        width="1.8" height="0.9"
+        material="opacity: 0; transparent: true; alphaTest: 0.01;"
         scale="0 0 0">
       </a-image>
 
       <!-- Capa 2 -->
-      <a-image
-        id="img2"
-        src="#brand"
-        position="-0.24 0 -0.02"
-        width="1.8"
-        height="0.9"
-        material="opacity: 0; transparent: true"
+      <a-image id="img2" src="#brand"
+        position="-0.50 0 0"
+        width="1.8" height="0.9"
+        material="opacity: 0; transparent: true; alphaTest: 0.01;"
         scale="0 0 0">
       </a-image>
 
       <!-- Capa 1 -->
-      <a-image
-        id="img1"
-        src="#brand"
-        position="-0.12 0 -0.01"
-        width="1.8"
-        height="0.9"
-        material="opacity: 0; transparent: true"
+      <a-image id="img1" src="#brand"
+        position="-0.25 0 0"
+        width="1.8" height="0.9"
+        material="opacity: 0; transparent: true; alphaTest: 0.01;"
         scale="0 0 0">
       </a-image>
 
       <!-- Capa 0 — imagen principal, al frente -->
-      <a-image
-        id="img0"
-        src="#brand"
+      <a-image id="img0" src="#brand"
         position="0 0 0"
-        width="1.8"
-        height="0.9"
-        material="opacity: 0; transparent: true"
+        width="1.8" height="0.9"
+        material="opacity: 0; transparent: true; alphaTest: 0.01;"
         scale="0 0 0">
       </a-image>
 
