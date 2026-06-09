@@ -41,5 +41,4 @@ target.addEventListener("targetLost", () => {
 actions.style.display = "none";
 
 });
-
 });
