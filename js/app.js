@@ -1,22 +1,22 @@
-const intro    = document.getElementById("intro");
-const startBtn = document.getElementById("startBtn");
-const actions  = document.getElementById("actions");
+const intro     = document.getElementById("intro");
+const startBtn  = document.getElementById("startBtn");
+const actions   = document.getElementById("actions");
 const container = document.getElementById("ar-container");
 
-// Capas de echo: de fondo (más transparente) a frente (opacidad 1)
+// Eco en profundidad (Z negativo = hacia atrás)
+// La capa 0 es la principal al frente, las demás se alejan en Z
 const echoLayers = [
-  { id: "img4", x: "-1.0", opacity: 0.10, delay:   0 },
-  { id: "img3", x: "-0.75", opacity: 0.22, delay: 100 },
-  { id: "img2", x: "-0.50", opacity: 0.40, delay: 200 },
-  { id: "img1", x: "-0.25", opacity: 0.65, delay: 300 },
-  { id: "img0", x:  "0",    opacity: 1.00, delay: 400 },
+  { id: "img4", x: "0", y: "0", z: "-0.20", opacity: 0.10, delay:   0 },
+  { id: "img3", x: "0", y: "0", z: "-0.15", opacity: 0.22, delay: 100 },
+  { id: "img2", x: "0", y: "0", z: "-0.10", opacity: 0.40, delay: 200 },
+  { id: "img1", x: "0", y: "0", z: "-0.05", opacity: 0.65, delay: 300 },
+  { id: "img0", x: "0", y: "0", z:  "0",    opacity: 1.00, delay: 400 },
 ];
 
-// Construye el HTML de la escena AR dinámicamente
 function buildSceneHTML() {
-  const layers = echoLayers.map(({ id, x }) => `
+  const layers = echoLayers.map(({ id, x, y, z }) => `
     <a-image id="${id}" src="#brand"
-      position="${x} 0 0"
+      position="${x} ${y} ${z}"
       width="1.8" height="0.9"
       material="opacity: 0; transparent: true; alphaTest: 0.01;"
       scale="0 0 0">
@@ -42,7 +42,6 @@ function buildSceneHTML() {
     </a-scene>`;
 }
 
-// Al hacer clic: ocultar intro, inyectar escena AR y arrancar listeners
 startBtn.addEventListener("click", () => {
   intro.style.display = "none";
   container.innerHTML = buildSceneHTML();
