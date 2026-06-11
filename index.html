@@ -71,30 +71,17 @@ html, body {
   cursor: pointer;
 }
 
-/* ── AR CONTAINER ───────────────────────────
-   MindAR necesita que el contenedor sea
-   position:fixed, 100vw x 100vh, sin overflow.
-   NO usar "embedded" en <a-scene>.
-─────────────────────────────────────────── */
+/* ── AR CONTAINER ───────────────────────────── */
 #ar-container {
-  visibility: hidden;
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 0; left: 0;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background: #000;
+  /* Empieza oculto — se inyecta el HTML dentro al hacer clic */
 }
 
-/* A-Frame canvas también ocupa todo */
-#ar-container canvas,
-#ar-container a-scene {
-  width: 100% !important;
-  height: 100% !important;
-}
-
-/* ── BOTONES ────────────────────────────── */
+/* ── BOTONES ────────────────────────────────── */
 #actions {
   position: fixed;
   bottom: 30px;
@@ -142,72 +129,8 @@ html, body {
   <a class="action-btn whatsapp" href="https://wa.me/524461846064" target="_blank"><i class="fab fa-whatsapp"></i></a>
 </div>
 
-<!-- ── AR ────────────────────────────── -->
-<!-- SIN "embedded" — MindAR lo requiere así -->
-<div id="ar-container">
-    <a-scene
-    mindar-image="
-      imageTargetSrc: ./targets/targets.mind;
-      uiScanning: yes;
-      uiLoading: yes;
-      uiError: yes;
-    "
-    color-space="sRGB"
-    renderer="colorManagement: true;"
-    vr-mode-ui="enabled: false"
-    device-orientation-permission-ui="enabled: true">
-
-    <a-assets>
-      <img id="brand" src="./assets/fondo.png" crossorigin="anonymous">
-    </a-assets>
-
-    <a-camera position="0 0 0" look-controls="false"></a-camera>
-
-    <a-entity id="target" mindar-image-target="targetIndex: 0">
-
-      <!-- Capa 4 — más lejos a la izquierda, muy transparente -->
-      <a-image id="img4" src="#brand"
-        position="-1.0 0 0"
-        width="1.8" height="0.9"
-        material="opacity: 0; transparent: true; alphaTest: 0.01;"
-        scale="0 0 0">
-      </a-image>
-
-      <!-- Capa 3 -->
-      <a-image id="img3" src="#brand"
-        position="-0.75 0 0"
-        width="1.8" height="0.9"
-        material="opacity: 0; transparent: true; alphaTest: 0.01;"
-        scale="0 0 0">
-      </a-image>
-
-      <!-- Capa 2 -->
-      <a-image id="img2" src="#brand"
-        position="-0.50 0 0"
-        width="1.8" height="0.9"
-        material="opacity: 0; transparent: true; alphaTest: 0.01;"
-        scale="0 0 0">
-      </a-image>
-
-      <!-- Capa 1 -->
-      <a-image id="img1" src="#brand"
-        position="-0.25 0 0"
-        width="1.8" height="0.9"
-        material="opacity: 0; transparent: true; alphaTest: 0.01;"
-        scale="0 0 0">
-      </a-image>
-
-      <!-- Capa 0 — imagen principal -->
-      <a-image id="img0" src="#brand"
-        position="0 0 0"
-        width="1.8" height="0.9"
-        material="opacity: 0; transparent: true; alphaTest: 0.01;"
-        scale="0 0 0">
-      </a-image>
-
-    </a-entity>
-  </a-scene>
-</div>
+<!-- ── AR: vacío al inicio, se llena con JS al hacer clic ── -->
+<div id="ar-container"></div>
 
 <script src="./js/app.js"></script>
 </body>
