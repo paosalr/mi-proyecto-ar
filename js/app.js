@@ -3,14 +3,14 @@ const startBtn  = document.getElementById("startBtn");
 const actions   = document.getElementById("actions");
 const container = document.getElementById("ar-container");
 
-// Eco en profundidad (Z negativo = hacia atrás)
-// La capa 0 es la principal al frente, las demás se alejan en Z
+// Eco hacia ARRIBA (Y positivo) con opacidad decreciente
+// La capa 0 es la principal en el centro, las demás suben
 const echoLayers = [
-  { id: "img4", x: "0", y: "0", z: "-0.20", opacity: 0.10, delay:   0 },
-  { id: "img3", x: "0", y: "0", z: "-0.15", opacity: 0.22, delay: 100 },
-  { id: "img2", x: "0", y: "0", z: "-0.10", opacity: 0.40, delay: 200 },
-  { id: "img1", x: "0", y: "0", z: "-0.05", opacity: 0.65, delay: 300 },
-  { id: "img0", x: "0", y: "0", z:  "0",    opacity: 1.00, delay: 400 },
+  { id: "img4", x:"0", y: "0.30", z:"0", opacity: 0.08, delay:   0 },
+  { id: "img3", x:"0", y: "0.22", z:"0", opacity: 0.18, delay: 100 },
+  { id: "img2", x:"0", y: "0.14", z:"0", opacity: 0.32, delay: 200 },
+  { id: "img1", x:"0", y: "0.07", z:"0", opacity: 0.55, delay: 300 },
+  { id: "img0", x:"0", y: "0",    z:"0", opacity: 1.00, delay: 400 },
 ];
 
 function buildSceneHTML() {
@@ -59,12 +59,22 @@ startBtn.addEventListener("click", () => {
         if (!el) return;
 
         setTimeout(() => {
+          // Entrada: escala con rebote
           el.setAttribute("animation__scale",
             "property: scale; to: 1 1 1; dur: 600; easing: easeOutBack"
           );
+          // Fade in a opacidad final
           el.setAttribute("animation__opacity",
             `property: material.opacity; to: ${opacity}; dur: 500; easing: easeOutQuad`
           );
+
+          // Solo la imagen principal flota (sube y baja en loop)
+          if (id === "img0") {
+            const baseY = 0;
+            el.setAttribute("animation__float",
+              `property: position; to: 0 ${baseY + 0.06} 0; dur: 1800; dir: alternate; loop: true; easing: easeInOutSine`
+            );
+          }
         }, delay);
       });
     });
@@ -72,12 +82,14 @@ startBtn.addEventListener("click", () => {
     target.addEventListener("targetLost", () => {
       actions.style.display = "none";
 
-      echoLayers.forEach(({ id }) => {
+      echoLayers.forEach(({ id, y }) => {
         const el = container.querySelector(`#${id}`);
         if (!el) return;
         el.removeAttribute("animation__scale");
         el.removeAttribute("animation__opacity");
+        el.removeAttribute("animation__float");
         el.setAttribute("scale",    "0 0 0");
+        el.setAttribute("position", `0 ${y} 0`);
         el.setAttribute("material", "opacity: 0; transparent: true; alphaTest: 0.01;");
       });
     });
