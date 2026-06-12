@@ -29,7 +29,7 @@ function buildSceneHTML() {
       mindar-image="
         imageTargetSrc: ./targets/targets.mind;
         uiScanning: yes;
-        filterMinCF: 0.001;
+        filterMinCF: 0.0001;
         filterBeta: 0.01;
       "
       color-space="sRGB"
