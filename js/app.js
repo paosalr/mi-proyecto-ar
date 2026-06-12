@@ -4,9 +4,6 @@ const actions   = document.getElementById("actions");
 const container = document.getElementById("ar-container");
 
 const BASE_Y = 0;
-
-// QR es cuadrado → width y height iguales
-// fondo.png se escala para caber encima del QR
 const W = 1.0;
 const H = 1.0;
 
@@ -29,7 +26,12 @@ function buildSceneHTML() {
 
   return `
     <a-scene
-      mindar-image="imageTargetSrc: ./targets/targets.mind; uiScanning: yes;"
+      mindar-image="
+        imageTargetSrc: ./targets/targets.mind;
+        uiScanning: yes;
+        filterMinCF: 0.001;
+        filterBeta: 0.01;
+      "
       color-space="sRGB"
       renderer="colorManagement: true;"
       vr-mode-ui="enabled: false"
