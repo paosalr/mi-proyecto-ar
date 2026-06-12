@@ -3,12 +3,12 @@ const startBtn  = document.getElementById("startBtn");
 const actions   = document.getElementById("actions");
 const container = document.getElementById("ar-container");
 
-// BASE_Y = 0 = centro exacto de la tarjeta
-// Ajusta este valor hasta que quede bien:
-// 0   = centro de la tarjeta
-// 0.3 = arriba de la tarjeta  
-// -0.3 = abajo de la tarjeta
 const BASE_Y = 0;
+
+// QR es cuadrado → width y height iguales
+// fondo.png se escala para caber encima del QR
+const W = 1.0;
+const H = 1.0;
 
 const echoLayers = [
   { id: "img4", y: BASE_Y + 0.28, opacity: 0.08, delay:   0 },
@@ -22,7 +22,7 @@ function buildSceneHTML() {
   const layers = echoLayers.map(({ id, y }) => `
     <a-image id="${id}" src="#brand"
       position="0 ${y.toFixed(3)} 0"
-      width="1.8" height="0.9"
+      width="${W}" height="${H}"
       material="opacity: 0; transparent: true; alphaTest: 0.01;"
       scale="0 0 0">
     </a-image>`).join("\n");
@@ -39,8 +39,7 @@ function buildSceneHTML() {
         <img id="brand" src="./assets/fondo.png" crossorigin="anonymous">
       </a-assets>
 
-      <a-camera
-        position="0 0 0"
+      <a-camera position="0 0 0"
         look-controls="enabled: false"
         wasd-controls="enabled: false">
       </a-camera>
@@ -74,7 +73,6 @@ startBtn.addEventListener("click", () => {
           el.setAttribute("animation__opacity",
             `property: material.opacity; to: ${opacity}; dur: 500; easing: easeOutQuad`
           );
-
           if (id === "img0") {
             el.setAttribute("animation__float",
               `property: position; from: 0 ${y.toFixed(3)} 0; to: 0 ${(y + 0.05).toFixed(3)} 0; dur: 1800; dir: alternate; loop: true; easing: easeInOutSine`
