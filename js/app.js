@@ -5,7 +5,7 @@ const container = document.getElementById("ar-container");
 
 // Y = -0.3 pone la imagen pegada en la parte baja de la tarjeta
 // Las copias del eco suben desde ahí
-const BASE_Y = -0.3;
+const BASE_Y = -0.45;
 
 const echoLayers = [
   { id: "img4", y: BASE_Y + 0.30, opacity: 0.08, delay:   0 },
