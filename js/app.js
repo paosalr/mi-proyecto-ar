@@ -7,20 +7,24 @@ const BASE_Y = 0;
 const W = 1.0;
 const H = 1.0;
 
+// Cada capa separada en Z para evitar z-fighting (parpadeo)
 const echoLayers = [
-  { id: "img4", y: BASE_Y + 0.28, opacity: 0.08, delay:   0 },
-  { id: "img3", y: BASE_Y + 0.20, opacity: 0.18, delay: 100 },
-  { id: "img2", y: BASE_Y + 0.13, opacity: 0.32, delay: 200 },
-  { id: "img1", y: BASE_Y + 0.06, opacity: 0.55, delay: 300 },
-  { id: "img0", y: BASE_Y,        opacity: 1.00, delay: 400 },
+  { id: "img4", y: BASE_Y + 0.28, z: -0.04, opacity: 0.08, delay:   0 },
+  { id: "img3", y: BASE_Y + 0.20, z: -0.03, opacity: 0.18, delay: 100 },
+  { id: "img2", y: BASE_Y + 0.13, z: -0.02, opacity: 0.32, delay: 200 },
+  { id: "img1", y: BASE_Y + 0.06, z: -0.01, opacity: 0.55, delay: 300 },
+  { id: "img0", y: BASE_Y,        z:  0,    opacity: 1.00, delay: 400 },
 ];
 
+const MAT_HIDDEN  = "opacity: 0; transparent: true; alphaTest: 0.5; depthWrite: false; depthTest: false;";
+const MAT_VISIBLE = "transparent: true; alphaTest: 0.5; depthWrite: false; depthTest: false;";
+
 function buildSceneHTML() {
-  const layers = echoLayers.map(({ id, y }) => `
+  const layers = echoLayers.map(({ id, y, z }) => `
     <a-image id="${id}" src="#brand"
-      position="0 ${y.toFixed(3)} 0"
+      position="0 ${y.toFixed(3)} ${z}"
       width="${W}" height="${H}"
-      material="opacity: 0; transparent: true; alphaTest: 0.01;"
+      material="${MAT_HIDDEN}"
       scale="0 0 0">
     </a-image>`).join("\n");
 
@@ -29,7 +33,7 @@ function buildSceneHTML() {
       mindar-image="
         imageTargetSrc: ./targets/targets.mind;
         uiScanning: yes;
-        filterMinCF: 0.0001;
+        filterMinCF: 0.001;
         filterBeta: 0.01;
       "
       color-space="sRGB"
@@ -64,7 +68,7 @@ startBtn.addEventListener("click", () => {
     target.addEventListener("targetFound", () => {
       actions.style.display = "flex";
 
-      echoLayers.forEach(({ id, opacity, delay, y }) => {
+      echoLayers.forEach(({ id, opacity, delay, y, z }) => {
         const el = container.querySelector(`#${id}`);
         if (!el) return;
 
@@ -77,7 +81,7 @@ startBtn.addEventListener("click", () => {
           );
           if (id === "img0") {
             el.setAttribute("animation__float",
-              `property: position; from: 0 ${y.toFixed(3)} 0; to: 0 ${(y + 0.05).toFixed(3)} 0; dur: 1800; dir: alternate; loop: true; easing: easeInOutSine`
+              `property: position; from: 0 ${y.toFixed(3)} ${z}; to: 0 ${(y + 0.05).toFixed(3)} ${z}; dur: 1800; dir: alternate; loop: true; easing: easeInOutSine`
             );
           }
         }, delay);
@@ -87,15 +91,15 @@ startBtn.addEventListener("click", () => {
     target.addEventListener("targetLost", () => {
       actions.style.display = "none";
 
-      echoLayers.forEach(({ id, y }) => {
+      echoLayers.forEach(({ id, y, z }) => {
         const el = container.querySelector(`#${id}`);
         if (!el) return;
         el.removeAttribute("animation__scale");
         el.removeAttribute("animation__opacity");
         el.removeAttribute("animation__float");
         el.setAttribute("scale",    "0 0 0");
-        el.setAttribute("position", `0 ${y.toFixed(3)} 0`);
-        el.setAttribute("material", "opacity: 0; transparent: true; alphaTest: 0.01;");
+        el.setAttribute("position", `0 ${y.toFixed(3)} ${z}`);
+        el.setAttribute("material", MAT_HIDDEN);
       });
     });
   });
