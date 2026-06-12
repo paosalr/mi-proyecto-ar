@@ -3,15 +3,18 @@ const startBtn  = document.getElementById("startBtn");
 const actions   = document.getElementById("actions");
 const container = document.getElementById("ar-container");
 
-// Y = -0.3 pone la imagen pegada en la parte baja de la tarjeta
-// Las copias del eco suben desde ahí
-const BASE_Y = -0.45;
+// BASE_Y = 0 = centro exacto de la tarjeta
+// Ajusta este valor hasta que quede bien:
+// 0   = centro de la tarjeta
+// 0.3 = arriba de la tarjeta  
+// -0.3 = abajo de la tarjeta
+const BASE_Y = 0;
 
 const echoLayers = [
-  { id: "img4", y: BASE_Y + 0.30, opacity: 0.08, delay:   0 },
-  { id: "img3", y: BASE_Y + 0.22, opacity: 0.18, delay: 100 },
-  { id: "img2", y: BASE_Y + 0.14, opacity: 0.32, delay: 200 },
-  { id: "img1", y: BASE_Y + 0.07, opacity: 0.55, delay: 300 },
+  { id: "img4", y: BASE_Y + 0.28, opacity: 0.08, delay:   0 },
+  { id: "img3", y: BASE_Y + 0.20, opacity: 0.18, delay: 100 },
+  { id: "img2", y: BASE_Y + 0.13, opacity: 0.32, delay: 200 },
+  { id: "img1", y: BASE_Y + 0.06, opacity: 0.55, delay: 300 },
   { id: "img0", y: BASE_Y,        opacity: 1.00, delay: 400 },
 ];
 
@@ -30,13 +33,17 @@ function buildSceneHTML() {
       color-space="sRGB"
       renderer="colorManagement: true;"
       vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: true">
+      device-orientation-permission-ui="enabled: false">
 
       <a-assets>
         <img id="brand" src="./assets/fondo.png" crossorigin="anonymous">
       </a-assets>
 
-      <a-camera position="0 0 0" look-controls="false"></a-camera>
+      <a-camera
+        position="0 0 0"
+        look-controls="enabled: false"
+        wasd-controls="enabled: false">
+      </a-camera>
 
       <a-entity id="target" mindar-image-target="targetIndex: 0">
         ${layers}
@@ -68,7 +75,6 @@ startBtn.addEventListener("click", () => {
             `property: material.opacity; to: ${opacity}; dur: 500; easing: easeOutQuad`
           );
 
-          // Solo la imagen principal flota suavemente
           if (id === "img0") {
             el.setAttribute("animation__float",
               `property: position; from: 0 ${y.toFixed(3)} 0; to: 0 ${(y + 0.05).toFixed(3)} 0; dur: 1800; dir: alternate; loop: true; easing: easeInOutSine`
