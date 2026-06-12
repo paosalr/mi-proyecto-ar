@@ -3,20 +3,22 @@ const startBtn  = document.getElementById("startBtn");
 const actions   = document.getElementById("actions");
 const container = document.getElementById("ar-container");
 
-// Eco en profundidad (Z negativo = hacia atrás)
-// La capa 0 es la principal al frente, las demás se alejan en Z
+// Y = -0.3 pone la imagen pegada en la parte baja de la tarjeta
+// Las copias del eco suben desde ahí
+const BASE_Y = -0.3;
+
 const echoLayers = [
-  { id: "img4", x: "0", y: "0", z: "-0.20", opacity: 0.10, delay:   0 },
-  { id: "img3", x: "0", y: "0", z: "-0.15", opacity: 0.22, delay: 100 },
-  { id: "img2", x: "0", y: "0", z: "-0.10", opacity: 0.40, delay: 200 },
-  { id: "img1", x: "0", y: "0", z: "-0.05", opacity: 0.65, delay: 300 },
-  { id: "img0", x: "0", y: "0", z:  "0",    opacity: 1.00, delay: 400 },
+  { id: "img4", y: BASE_Y + 0.30, opacity: 0.08, delay:   0 },
+  { id: "img3", y: BASE_Y + 0.22, opacity: 0.18, delay: 100 },
+  { id: "img2", y: BASE_Y + 0.14, opacity: 0.32, delay: 200 },
+  { id: "img1", y: BASE_Y + 0.07, opacity: 0.55, delay: 300 },
+  { id: "img0", y: BASE_Y,        opacity: 1.00, delay: 400 },
 ];
 
 function buildSceneHTML() {
-  const layers = echoLayers.map(({ id, x, y, z }) => `
+  const layers = echoLayers.map(({ id, y }) => `
     <a-image id="${id}" src="#brand"
-      position="${x} ${y} ${z}"
+      position="0 ${y.toFixed(3)} 0"
       width="1.8" height="0.9"
       material="opacity: 0; transparent: true; alphaTest: 0.01;"
       scale="0 0 0">
@@ -54,7 +56,7 @@ startBtn.addEventListener("click", () => {
     target.addEventListener("targetFound", () => {
       actions.style.display = "flex";
 
-      echoLayers.forEach(({ id, opacity, delay }) => {
+      echoLayers.forEach(({ id, opacity, delay, y }) => {
         const el = container.querySelector(`#${id}`);
         if (!el) return;
 
@@ -65,6 +67,13 @@ startBtn.addEventListener("click", () => {
           el.setAttribute("animation__opacity",
             `property: material.opacity; to: ${opacity}; dur: 500; easing: easeOutQuad`
           );
+
+          // Solo la imagen principal flota suavemente
+          if (id === "img0") {
+            el.setAttribute("animation__float",
+              `property: position; from: 0 ${y.toFixed(3)} 0; to: 0 ${(y + 0.05).toFixed(3)} 0; dur: 1800; dir: alternate; loop: true; easing: easeInOutSine`
+            );
+          }
         }, delay);
       });
     });
@@ -72,12 +81,14 @@ startBtn.addEventListener("click", () => {
     target.addEventListener("targetLost", () => {
       actions.style.display = "none";
 
-      echoLayers.forEach(({ id }) => {
+      echoLayers.forEach(({ id, y }) => {
         const el = container.querySelector(`#${id}`);
         if (!el) return;
         el.removeAttribute("animation__scale");
         el.removeAttribute("animation__opacity");
+        el.removeAttribute("animation__float");
         el.setAttribute("scale",    "0 0 0");
+        el.setAttribute("position", `0 ${y.toFixed(3)} 0`);
         el.setAttribute("material", "opacity: 0; transparent: true; alphaTest: 0.01;");
       });
     });
